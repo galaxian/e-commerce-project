@@ -2,12 +2,12 @@ package com.example.ecommerce.member.infrastructure.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.ecommerce.member.application.port.out.memberRepository;
+import com.example.ecommerce.member.application.port.out.MemberRepository;
 import com.example.ecommerce.member.domain.Member;
 import com.example.ecommerce.member.infrastructure.entity.MemberEntity;
 
 @Repository
-public class MemberRepositoryImpl implements memberRepository {
+public class MemberRepositoryImpl implements MemberRepository {
 
 	private final MemberJpaRepository memberJpaRepository;
 
