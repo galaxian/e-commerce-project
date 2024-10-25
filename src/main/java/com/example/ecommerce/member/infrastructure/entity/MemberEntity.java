@@ -28,27 +28,29 @@ public class MemberEntity extends BaseEntity {
 	private String encryptPassword;
 
 	@Embedded
-	private Address address;
+	private AddressVo addressVo;
 
 	@Embedded
-	private PhoneNumber phoneNumber;
+	private PhoneNumberVo phoneNumberVo;
 
-	public MemberEntity(Long id, String encryptEmail, String encryptName, String encryptPassword, Address address,
-		PhoneNumber phoneNumber) {
+	public MemberEntity(Long id, String encryptEmail, String encryptName, String encryptPassword, AddressVo addressVo,
+		PhoneNumberVo phoneNumberVo) {
 		this.id = id;
 		this.encryptEmail = encryptEmail;
 		this.encryptName = encryptName;
 		this.encryptPassword = encryptPassword;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
+		this.addressVo = addressVo;
+		this.phoneNumberVo = phoneNumberVo;
 	}
 
 	public static MemberEntity from(Member member) {
 		return new MemberEntity(member.getId(), member.getEncryptEmail(), member.getEncryptName(),
-			member.getEncryptPassword(), member.getAddress(), member.getPhoneNumber());
+			member.getEncryptPassword(), AddressVo.from(member.getAddress()), PhoneNumberVo.from(member.getPhoneNumber()));
 	}
 
 	public Member toMemberDomain() {
-		return new Member(id, encryptEmail, encryptName, encryptPassword, address, phoneNumber, getCreatedAt(), getUpdatedAt());
+		return new Member(id, encryptEmail, encryptName, encryptPassword, addressVo.toAddressDomain(),
+			phoneNumberVo.toPhoneNumberDomain(), getCreatedAt(), getUpdatedAt());
 	}
+	
 }
