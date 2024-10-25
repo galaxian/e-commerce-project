@@ -4,11 +4,8 @@ import com.example.ecommerce.member.domain.Address;
 import com.example.ecommerce.member.domain.Member;
 import com.example.ecommerce.member.domain.PhoneNumber;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
 
-@Getter
 public record SignUpReqDto(
 	@NotNull
 	String email,
@@ -19,13 +16,13 @@ public record SignUpReqDto(
 	@NotNull
 	String name,
 
-	@NotBlank
-	Address address,
+	@NotNull
+	AddressDto addressDto,
 
-	@NotBlank
-	PhoneNumber phoneNumber
+	@NotNull
+	PhoneNumberDto phoneNumberDto
 ) {
-	public Member toMember() {
+	public Member toMember(Address address, PhoneNumber phoneNumber) {
 		return new Member(email, password, name, address, phoneNumber);
 	}
 }

@@ -1,9 +1,7 @@
 package com.example.ecommerce.member.infrastructure.entity;
 
 import com.example.ecommerce.common.entity.BaseEntity;
-import com.example.ecommerce.member.domain.Address;
 import com.example.ecommerce.member.domain.Member;
-import com.example.ecommerce.member.domain.PhoneNumber;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -28,29 +26,29 @@ public class MemberEntity extends BaseEntity {
 	private String encryptPassword;
 
 	@Embedded
-	private AddressVo addressVo;
+	private AddressEmbeddable addressEmbeddable;
 
 	@Embedded
-	private PhoneNumberVo phoneNumberVo;
+	private PhoneNumberEmbeddable phoneNumberEmbeddable;
 
-	public MemberEntity(Long id, String encryptEmail, String encryptName, String encryptPassword, AddressVo addressVo,
-		PhoneNumberVo phoneNumberVo) {
+	public MemberEntity(Long id, String encryptEmail, String encryptName, String encryptPassword, AddressEmbeddable addressEmbeddable,
+		PhoneNumberEmbeddable phoneNumberEmbeddable) {
 		this.id = id;
 		this.encryptEmail = encryptEmail;
 		this.encryptName = encryptName;
 		this.encryptPassword = encryptPassword;
-		this.addressVo = addressVo;
-		this.phoneNumberVo = phoneNumberVo;
+		this.addressEmbeddable = addressEmbeddable;
+		this.phoneNumberEmbeddable = phoneNumberEmbeddable;
 	}
 
 	public static MemberEntity from(Member member) {
 		return new MemberEntity(member.getId(), member.getEncryptEmail(), member.getEncryptName(),
-			member.getEncryptPassword(), AddressVo.from(member.getAddress()), PhoneNumberVo.from(member.getPhoneNumber()));
+			member.getEncryptPassword(), AddressEmbeddable.from(member.getAddress()), PhoneNumberEmbeddable.from(member.getPhoneNumber()));
 	}
 
 	public Member toMemberDomain() {
-		return new Member(id, encryptEmail, encryptName, encryptPassword, addressVo.toAddressDomain(),
-			phoneNumberVo.toPhoneNumberDomain(), getCreatedAt(), getUpdatedAt());
+		return new Member(id, encryptEmail, encryptName, encryptPassword, addressEmbeddable.toAddressDomain(),
+			phoneNumberEmbeddable.toPhoneNumberDomain(), getCreatedAt(), getUpdatedAt());
 	}
-	
+
 }
