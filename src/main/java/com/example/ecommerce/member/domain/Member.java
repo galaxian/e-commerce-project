@@ -23,4 +23,16 @@ public class Member {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 	}
+
+	public Member(Long id, String encryptEmail, String encryptName, String encryptPassword, Address address,
+		PhoneNumber phoneNumber, LocalDateTime createAt, LocalDateTime updateAt) {
+		this.id = id;
+		this.encryptEmail = encryptEmail;
+		this.encryptName = encryptName;
+		this.encryptPassword = encryptPassword;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.createAt = createAt;
+		this.updateAt = updateAt;
+	}
 }

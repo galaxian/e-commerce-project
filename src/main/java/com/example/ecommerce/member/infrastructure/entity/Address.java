@@ -1,4 +1,4 @@
-package com.example.ecommerce.member.infrastructure;
+package com.example.ecommerce.member.infrastructure.entity;
 
 import java.util.Objects;
 
