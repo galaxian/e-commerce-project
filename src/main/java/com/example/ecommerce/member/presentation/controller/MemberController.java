@@ -21,7 +21,7 @@ public class MemberController {
 		this.signUpUseCase = signUpUseCase;
 	}
 
-	@PostMapping("/members")
+	@PostMapping("/signup")
 	public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpReqDto reqDto) {
 		Long memberId = signUpUseCase.signUp(reqDto);
 		return ResponseEntity.created(URI.create("/members/" + memberId)).build();
