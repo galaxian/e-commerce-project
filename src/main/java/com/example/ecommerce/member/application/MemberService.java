@@ -46,12 +46,12 @@ public class MemberService implements SignUpUseCase, UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		String encryptUsername = encrypt(username);
-		Member member = memberRepository.findByEmail(encryptUsername).orElseThrow(
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		String encryptEmail = encrypt(email);
+		Member member = memberRepository.findByEmail(encryptEmail).orElseThrow(
 			() -> new UnauthorizedException("사용자를 찾을 수 없습니다.")
 		);
-		return new CustomUserDetails(username, member.getId(), member.getEncryptPassword(), null);
+		return new CustomUserDetails(encryptEmail, member.getId(), member.getEncryptPassword(), null);
 	}
 
 	private Member createEncryptMember(SignUpReqDto reqDto) {
