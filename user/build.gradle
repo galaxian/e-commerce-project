@@ -48,7 +48,7 @@ jar {
 }
 
 bootJar {
-    mainClass = 'com.example.ecommerce.user.MemberApplication'
+    mainClass = 'com.example.ecommerce.MemberApplication'
 }
 
 tasks.named('test') {
