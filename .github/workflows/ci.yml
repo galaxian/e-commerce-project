@@ -9,6 +9,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [user]
+
     steps:
       - name: checkout Repository
         uses: actions/checkout@v3
@@ -19,8 +23,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: gradle build
+      - name: gradle build ${{ matrix.module }}
         run: |
+          cd ${{ matrix.module }}
           chmod +x ./gradlew
           ./gradlew clean build
 
