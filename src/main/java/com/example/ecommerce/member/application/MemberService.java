@@ -4,11 +4,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.ecommerce.common.auth.CustomUserDetails;
+import com.example.ecommerce.common.exception.UnauthorizedException;
 import com.example.ecommerce.member.application.dto.req.AddressDto;
 import com.example.ecommerce.member.application.dto.req.PhoneNumberDto;
 import com.example.ecommerce.member.application.dto.req.SignUpReqDto;
@@ -20,7 +25,7 @@ import com.example.ecommerce.member.domain.PhoneNumber;
 
 @Service
 @Transactional
-public class MemberService implements SignUpUseCase {
+public class MemberService implements SignUpUseCase, UserDetailsService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -38,6 +43,15 @@ public class MemberService implements SignUpUseCase {
 	public Long signUp(SignUpReqDto reqDto) {
 		Member member = createEncryptMember(reqDto);
 		return memberRepository.save(member).getId();
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		String encryptUsername = encrypt(username);
+		Member member = memberRepository.findByEmail(encryptUsername).orElseThrow(
+			() -> new UnauthorizedException("사용자를 찾을 수 없습니다.")
+		);
+		return new CustomUserDetails(username, member.getId(), member.getEncryptPassword(), null);
 	}
 
 	private Member createEncryptMember(SignUpReqDto reqDto) {
