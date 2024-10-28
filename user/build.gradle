@@ -47,6 +47,9 @@ jar {
     enabled = false
 }
 
+bootJar {
+    mainClass = 'com.example.ecommerce.user.MemberApplication'
+}
 
 tasks.named('test') {
     useJUnitPlatform()
