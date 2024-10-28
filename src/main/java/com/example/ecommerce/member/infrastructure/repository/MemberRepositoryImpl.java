@@ -1,5 +1,7 @@
 package com.example.ecommerce.member.infrastructure.repository;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.ecommerce.member.application.port.out.MemberRepository;
@@ -20,4 +22,10 @@ public class MemberRepositoryImpl implements MemberRepository {
 		MemberEntity memberEntity = MemberEntity.from(member);
 		return memberJpaRepository.save(memberEntity).toMemberDomain();
 	}
+
+	@Override
+	public Optional<Member> findByEmail(String encryptEmail) {
+		return memberJpaRepository.findByEncryptEmail(encryptEmail).map(MemberEntity::toMemberDomain);
+	}
+
 }
