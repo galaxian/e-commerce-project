@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.product.application.dto.res.FindAllProductResDto;
+import com.example.product.application.dto.res.FindProductResDto;
 import com.example.product.application.port.out.ProductRepository;
 import com.example.product.domain.Product;
 
@@ -67,6 +69,28 @@ class ProductServiceTest {
 			.containsExactly(new BigDecimal("10000"), new BigDecimal("20000"));
 
 		then(productRepository).should(times(1)).findAll();
+	}
+
+	@DisplayName("상품 조회 성공")
+	@Test
+	public void findProduct() {
+		// given
+		Long productId = 1L;
+		Product product = new Product(productId, "상품1", "상품설명1", BigDecimal.valueOf(10000), 10, null, null);
+		given(productRepository.findById(productId))
+			.willReturn(Optional.of(product));
+
+		// when
+		FindProductResDto result = productService.findProduct(productId);
+
+		// then
+		assertThat(result).isNotNull();
+		assertThat(result.id()).isEqualTo(productId);
+		assertThat(result.name()).isEqualTo("상품1");
+		assertThat(result.description()).isEqualTo("상품설명1");
+		assertThat(result.price()).isEqualTo(BigDecimal.valueOf(10000));
+		assertThat(result.stock()).isEqualTo(10);
+		then(productRepository).should(times(1)).findById(productId);
 	}
 
 }
