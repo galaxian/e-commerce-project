@@ -1,6 +1,7 @@
 package com.example.product.infrastructure.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 	public List<Product> findAll() {
 		List<ProductEntity> productEntityList = productJpaRepository.findAll();
 		return convertToDomain(productEntityList);
+	}
+
+	@Override
+	public Optional<Product> findById(Long id) {
+		return productJpaRepository.findById(id).map(ProductEntity::toDomain);
 	}
 
 	private List<Product> convertToDomain(List<ProductEntity> productEntityList) {
