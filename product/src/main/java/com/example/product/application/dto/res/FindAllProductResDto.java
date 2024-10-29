@@ -5,11 +5,12 @@ import java.math.BigDecimal;
 import com.example.product.domain.Product;
 
 public record FindAllProductResDto(
+	Long id,
 	String name,
 	BigDecimal price,
 	Integer stock
 ) {
 	public FindAllProductResDto(Product product) {
-		this(product.getName(), product.getPrice(), product.getStock());
+		this(product.getId(), product.getName(), product.getPrice(), product.getStock());
 	}
 }
