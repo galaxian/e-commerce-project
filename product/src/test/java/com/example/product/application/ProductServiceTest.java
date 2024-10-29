@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.product.application.dto.res.FindAllProductResDto;
 import com.example.product.application.dto.res.FindProductResDto;
 import com.example.product.application.port.out.ProductRepository;
+import com.example.product.common.exception.ProductNotFoundException;
 import com.example.product.domain.Product;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,6 +92,21 @@ class ProductServiceTest {
 		assertThat(result.price()).isEqualTo(BigDecimal.valueOf(10000));
 		assertThat(result.stock()).isEqualTo(10);
 		then(productRepository).should(times(1)).findById(productId);
+	}
+
+	@DisplayName("상품이 존재하지 않는 경우 예외 발생")
+	@Test
+	public void findProductProductNotFound() {
+		// given
+		Long productId = 1L;
+		given(productRepository.findById(productId))
+			.willReturn(Optional.empty());
+
+		// when
+		// then
+		assertThatThrownBy(
+			() -> productService.findProduct(productId)
+		).isInstanceOf(ProductNotFoundException.class);
 	}
 
 }
