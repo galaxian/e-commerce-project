@@ -1,4 +1,4 @@
-package com.example.ecommerce.member.application.dto.req;
+package com.example.auth;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,4 +1,4 @@
-package com.example.ecommerce.common.auth.jwt;
+package com.example.auth.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

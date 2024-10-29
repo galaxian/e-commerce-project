@@ -1,4 +1,4 @@
-package com.example.ecommerce.common.auth;
+package com.example.auth;
 
 import java.util.Collection;
 

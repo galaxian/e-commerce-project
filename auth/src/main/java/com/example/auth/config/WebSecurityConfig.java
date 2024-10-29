@@ -1,4 +1,4 @@
-package com.example.ecommerce.common.config;
+package com.example.auth.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.ecommerce.common.auth.jwt.JwtUtil;
-import com.example.ecommerce.common.auth.LoginFilter;
+import com.example.auth.LoginFilter;
+import com.example.auth.jwt.JwtUtil;
 
 @Configuration
 @EnableWebSecurity

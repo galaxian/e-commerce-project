@@ -1,4 +1,4 @@
-package com.example.ecommerce.common.auth;
+package com.example.auth;
 
 import java.io.IOException;
 
@@ -8,9 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import com.example.ecommerce.member.application.dto.req.LoginReqDto;
-import com.example.ecommerce.common.auth.jwt.JwtUtil;
+import com.example.auth.jwt.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
