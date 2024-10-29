@@ -61,7 +61,7 @@ public class WebSecurityConfig {
 			.logout(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/login", "/signup", "/", "products").permitAll()
+				.requestMatchers("/login", "/signup", "/", "products", "products/**").permitAll()
 				.anyRequest().authenticated())
 			.addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
