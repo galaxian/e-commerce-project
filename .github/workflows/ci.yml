@@ -2,16 +2,13 @@ name: CI pipeline
 
 on: pull_request
 
-permissions:
-  checks: write
-  pull-requests: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        module: [user]
+        module: [user, product, order]
 
     steps:
       - name: checkout Repository
@@ -23,21 +20,50 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+            path: ~/.gradle/caches
+            key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+            restore-keys: |
+              gradle-${{ runner.os }}-
+
       - name: gradle build ${{ matrix.module }}
         run: |
           cd ${{ matrix.module }}
           chmod +x ./gradlew
           ./gradlew clean build
 
+      - name: upload test result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results (${{ matrix.module }})
+          path: '**/build/test-results/test/TEST-*.xml'
+
+  publish-test-result:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    if: always()
+
+    steps:
+      - name: download-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
       - name: publish test result
         if: always()
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
-          files: '**/build/test-results/test/TEST-*.xml'
+          files: 'artifacts/**/*.xml'
 
       - name: add comment in fail test
         if: always()
         uses: mikepenz/action-junit-report@v4
         with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
+          report_paths: 'artifacts/**/*.xml'
           token: ${{ github.token }}

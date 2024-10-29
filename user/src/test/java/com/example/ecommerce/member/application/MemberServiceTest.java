@@ -12,13 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.ecommerce.member.application.dto.req.AddressDto;
-import com.example.ecommerce.member.application.dto.req.PhoneNumberDto;
-import com.example.ecommerce.member.application.dto.req.SignUpReqDto;
-import com.example.ecommerce.member.application.port.out.MemberRepository;
-import com.example.ecommerce.member.domain.Address;
-import com.example.ecommerce.member.domain.Member;
-import com.example.ecommerce.member.domain.PhoneNumber;
+import com.example.member.member.application.MemberService;
+import com.example.member.member.application.dto.req.AddressDto;
+import com.example.member.member.application.dto.req.PhoneNumberDto;
+import com.example.member.member.application.dto.req.SignUpReqDto;
+import com.example.member.member.application.port.out.MemberRepository;
+import com.example.member.member.domain.Address;
+import com.example.member.member.domain.Member;
+import com.example.member.member.domain.PhoneNumber;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
