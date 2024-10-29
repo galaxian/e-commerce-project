@@ -3,6 +3,7 @@ package com.example.product.infrastructure.entity;
 import java.math.BigDecimal;
 
 import com.example.product.common.entity.BaseEntity;
+import com.example.product.domain.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,4 +36,21 @@ public class ProductEntity extends BaseEntity {
 
 	@Column(name = "stock", nullable = false)
 	private Integer stock;
+
+	public ProductEntity(Long id, String name, String description, BigDecimal price, Integer stock) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.stock = stock;
+	}
+
+	public static ProductEntity from(Product product) {
+		return new ProductEntity(product.getId(), product.getName(), product.getDescription(), product.getPrice(),
+			product.getStock());
+	}
+
+	public Product toDomain() {
+		return new Product(id, name, description, price, stock, getCreatedAt(), getUpdatedAt());
+	}
 }
