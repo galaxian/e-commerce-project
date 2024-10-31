@@ -29,6 +29,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 		return productJpaRepository.findById(id).map(ProductEntity::toDomain);
 	}
 
+	@Override
+	public List<Product> findAllById(List<Long> productIds) {
+		List<ProductEntity> productEntityList = productJpaRepository.findAllById(productIds);
+		return convertToDomain(productEntityList);
+	}
+
 	private List<Product> convertToDomain(List<ProductEntity> productEntityList) {
 		return productEntityList.stream()
 			.map(ProductEntity::toDomain)

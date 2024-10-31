@@ -28,4 +28,9 @@ public class MemberRepositoryImpl implements MemberRepository {
 		return memberJpaRepository.findByEncryptEmail(encryptEmail).map(MemberEntity::toMemberDomain);
 	}
 
+	@Override
+	public Optional<Member> findById(Long memberId) {
+		return memberJpaRepository.findById(memberId).map(MemberEntity::toMemberDomain);
+	}
+
 }
