@@ -8,4 +8,6 @@ public interface MemberRepository {
 	Member save(Member member);
 
 	Optional<Member> findByEmail(String encryptEmail);
+
+	Optional<Member> findById(Long memberId);
 }
