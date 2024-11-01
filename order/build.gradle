@@ -36,6 +36,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation project(':auth')
+    implementation project(':member')
+    implementation project(':product')
 }
 
 bootJar {
