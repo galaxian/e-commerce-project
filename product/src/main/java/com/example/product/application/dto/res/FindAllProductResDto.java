@@ -11,6 +11,6 @@ public record FindAllProductResDto(
 	Integer stock
 ) {
 	public FindAllProductResDto(Product product) {
-		this(product.getId(), product.getName(), product.getPrice(), product.getStock());
+		this(product.getId(), product.getProductName(), product.getProductPrice(), product.getStock());
 	}
 }

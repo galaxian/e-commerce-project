@@ -1,9 +1,9 @@
 services:
-  user-service:
+  member-service:
     restart: always
     build:
       context: .
-      dockerfile: user/Dockerfile
+      dockerfile: member/Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -31,7 +31,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: product/Dockerfile
+      dockerfile: order/Dockerfile
     ports:
       - "8082:8082"
     environment:

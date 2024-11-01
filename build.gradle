@@ -35,7 +35,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-project(":user") {
+project(":member") {
     dependencies {
 
     }

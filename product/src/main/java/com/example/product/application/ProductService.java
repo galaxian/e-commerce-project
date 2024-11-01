@@ -45,9 +45,9 @@ public class ProductService implements FindAllProductUseCase, FindProductUseCase
 	private FindProductResDto convertToDto(Product product) {
 		return new FindProductResDto(
 			product.getId(),
-			product.getName(),
-			product.getDescription(),
-			product.getPrice(),
+			product.getProductName(),
+			product.getProductDescription(),
+			product.getProductPrice(),
 			product.getStock()
 		);
 	}
