@@ -9,19 +9,19 @@ import lombok.Getter;
 public class Product {
 
 	private Long id;
-	private String name;
-	private String description;
-	private BigDecimal price;
+	private String productName;
+	private String productDescription;
+	private BigDecimal productPrice;
 	private Integer stock;
 	private LocalDateTime createAt;
 	private LocalDateTime updateAt;
 
-	public Product(Long id, String name, String description, BigDecimal price, Integer stock, LocalDateTime createAt,
+	public Product(Long id, String productName, String productDescription, BigDecimal price, Integer stock, LocalDateTime createAt,
 		LocalDateTime updateAt) {
 		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
+		this.productName = productName;
+		this.productDescription = productDescription;
+		this.productPrice = price;
 		this.stock = stock;
 		this.createAt = createAt;
 		this.updateAt = updateAt;

@@ -1,7 +1,7 @@
-package com.example.member.member.infrastructure.entity;
+package com.example.member.infrastructure.entity;
 
 import com.example.member.common.entity.BaseEntity;
-import com.example.member.member.domain.Member;
+import com.example.member.domain.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

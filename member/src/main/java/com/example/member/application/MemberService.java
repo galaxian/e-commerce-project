@@ -1,4 +1,4 @@
-package com.example.member.member.application;
+package com.example.member.application;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.auth.CustomUserDetails;
+import com.example.member.application.dto.req.AddressDto;
+import com.example.member.application.dto.req.PhoneNumberDto;
+import com.example.member.application.dto.req.SignUpReqDto;
+import com.example.member.application.port.in.SignUpUseCase;
+import com.example.member.application.port.out.MemberRepository;
 import com.example.member.common.exception.UnauthorizedException;
-import com.example.member.member.application.dto.req.AddressDto;
-import com.example.member.member.application.dto.req.PhoneNumberDto;
-import com.example.member.member.application.dto.req.SignUpReqDto;
-import com.example.member.member.application.port.in.SignUpUseCase;
-import com.example.member.member.application.port.out.MemberRepository;
-import com.example.member.member.domain.Address;
-import com.example.member.member.domain.Member;
-import com.example.member.member.domain.PhoneNumber;
+import com.example.member.domain.Address;
+import com.example.member.domain.Member;
+import com.example.member.domain.PhoneNumber;
 
 @Service
 @Transactional

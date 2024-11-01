@@ -25,32 +25,32 @@ public class ProductEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "product_name", nullable = false)
+	private String productName;
 
-	@Column(name = "description", nullable = false)
-	private String description;
+	@Column(name = "product_description", nullable = false)
+	private String productDescription;
 
 	@Column(name = "price", nullable = false)
-	private BigDecimal price;
+	private BigDecimal productPrice;
 
 	@Column(name = "stock", nullable = false)
 	private Integer stock;
 
-	public ProductEntity(Long id, String name, String description, BigDecimal price, Integer stock) {
+	public ProductEntity(Long id, String productName, String productDescription, BigDecimal productPrice, Integer stock) {
 		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
+		this.productName = productName;
+		this.productDescription = productDescription;
+		this.productPrice = productPrice;
 		this.stock = stock;
 	}
 
 	public static ProductEntity from(Product product) {
-		return new ProductEntity(product.getId(), product.getName(), product.getDescription(), product.getPrice(),
+		return new ProductEntity(product.getId(), product.getProductName(), product.getProductDescription(), product.getProductPrice(),
 			product.getStock());
 	}
 
 	public Product toDomain() {
-		return new Product(id, name, description, price, stock, getCreatedAt(), getUpdatedAt());
+		return new Product(id, productName, productDescription, productPrice, stock, getCreatedAt(), getUpdatedAt());
 	}
 }

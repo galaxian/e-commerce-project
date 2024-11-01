@@ -1,8 +1,8 @@
-package com.example.member.member.application.dto.req;
+package com.example.member.application.dto.req;
 
-import com.example.member.member.domain.Address;
-import com.example.member.member.domain.Member;
-import com.example.member.member.domain.PhoneNumber;
+import com.example.member.domain.Address;
+import com.example.member.domain.Member;
+import com.example.member.domain.PhoneNumber;
 
 import jakarta.validation.constraints.NotNull;
 

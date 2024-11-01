@@ -1,8 +1,8 @@
-package com.example.member.member.infrastructure.entity;
+package com.example.member.infrastructure.entity;
 
 import java.util.Objects;
 
-import com.example.member.member.domain.Address;
+import com.example.member.domain.Address;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

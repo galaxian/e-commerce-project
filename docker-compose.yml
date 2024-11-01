@@ -1,5 +1,5 @@
 services:
-  user-service:
+  member-service:
     restart: always
     build:
       context: .

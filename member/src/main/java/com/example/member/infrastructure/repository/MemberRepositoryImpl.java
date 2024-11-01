@@ -1,12 +1,12 @@
-package com.example.member.member.infrastructure.repository;
+package com.example.member.infrastructure.repository;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.member.member.application.port.out.MemberRepository;
-import com.example.member.member.domain.Member;
-import com.example.member.member.infrastructure.entity.MemberEntity;
+import com.example.member.application.port.out.MemberRepository;
+import com.example.member.domain.Member;
+import com.example.member.infrastructure.entity.MemberEntity;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
