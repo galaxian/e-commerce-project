@@ -1,4 +1,4 @@
-package com.example.ecommerce.member.application;
+package com.example.member.application;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.member.application.MemberService;
 import com.example.member.application.dto.req.AddressDto;
 import com.example.member.application.dto.req.PhoneNumberDto;
 import com.example.member.application.dto.req.SignUpReqDto;

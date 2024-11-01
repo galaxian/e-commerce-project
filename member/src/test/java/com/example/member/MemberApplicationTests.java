@@ -1,4 +1,4 @@
-package com.example.ecommerce;
+package com.example.member;
 
 // @SpringBootTest
 class MemberApplicationTests {
