@@ -38,6 +38,6 @@ class ProductTest {
 		Boolean result = product.isSufficientStock(quantity);
 
 		//then
-		assertThat(result).isTrue();
+		assertThat(result).isFalse();
 	}
 }
