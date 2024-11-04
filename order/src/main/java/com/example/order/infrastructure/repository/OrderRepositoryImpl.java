@@ -1,5 +1,7 @@
 package com.example.order.infrastructure.repository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.order.application.port.out.OrderRepository;
@@ -18,5 +20,12 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Override
 	public Order save(Order order) {
 		return orderJpaRepository.save(OrderEntity.from(order)).toOrderDomain();
+	}
+
+	@Override
+	public List<Order> findAllByMemberId(Long memberId) {
+		return orderJpaRepository.findAllByMemberEntityId(memberId).stream()
+			.map(OrderEntity::toOrderDomain)
+			.toList();
 	}
 }
