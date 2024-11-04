@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.product.application.dto.res.FindAllProductResDto;
 import com.example.product.application.dto.res.FindProductResDto;
 import com.example.product.application.port.out.ProductRepository;
-import com.example.product.common.exception.ProductNotFoundException;
+import com.example.product.common.exception.NotFoundException;
 import com.example.product.domain.Product;
 
 @ExtendWith(MockitoExtension.class)
@@ -106,7 +106,7 @@ class ProductServiceTest {
 		// then
 		assertThatThrownBy(
 			() -> productService.findProduct(productId)
-		).isInstanceOf(ProductNotFoundException.class);
+		).isInstanceOf(NotFoundException.class);
 	}
 
 }

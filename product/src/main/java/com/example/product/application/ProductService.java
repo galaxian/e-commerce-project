@@ -10,7 +10,7 @@ import com.example.product.application.dto.res.FindProductResDto;
 import com.example.product.application.port.in.FindAllProductUseCase;
 import com.example.product.application.port.in.FindProductUseCase;
 import com.example.product.application.port.out.ProductRepository;
-import com.example.product.common.exception.ProductNotFoundException;
+import com.example.product.common.exception.NotFoundException;
 import com.example.product.domain.Product;
 
 @Transactional
@@ -39,7 +39,7 @@ public class ProductService implements FindAllProductUseCase, FindProductUseCase
 
 	private Product getProductById(Long productId) {
 		return productRepository.findById(productId)
-			.orElseThrow(() -> new ProductNotFoundException("상품을 찾을 수 없습니다."));
+			.orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
 	}
 
 	private FindProductResDto convertToDto(Product product) {
