@@ -45,10 +45,6 @@ dependencies {
     implementation project(':auth')
 }
 
-jar {
-    enabled = false
-}
-
 bootJar {
     mainClass = 'com.example.member.MemberApplication'
 }
