@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -56,6 +57,21 @@ class OrderQueryServiceTest {
 
 		assertThat(result.get(0)).isEqualTo(new FindAllOrderResDto(order1));
 		assertThat(result.get(1)).isEqualTo(new FindAllOrderResDto(order2));
+	}
+
+	@DisplayName("주문 목록이 없는 경우 빈 리스트 반환")
+	@Test
+	void findAllMyOrdersWhenNoOrdersExist() {
+		// Given
+		Long memberId = 1L;
+		given(orderRepository.findAllByMemberId(memberId)).willReturn(Collections.emptyList());
+
+		// When
+		List<FindAllOrderResDto> result = orderQueryService.findAllMyOrders(memberId);
+
+		// Then
+		assertThat(result).isNotNull();
+		assertThat(result).isEmpty();
 	}
 
 }
