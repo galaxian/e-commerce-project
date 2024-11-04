@@ -52,7 +52,7 @@ public class OrderService implements CreateOrderUseCase {
 
 	private Member findMemberById(Long userId) {
 		return memberRepository.findById(userId)
-			.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+			.orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
 	}
 
 	private Map<Long, Product> fetchProductsByIds(List<CreateOrderReqDto> createOrderReqDtos) {

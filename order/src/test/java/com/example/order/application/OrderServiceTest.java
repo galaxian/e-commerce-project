@@ -22,6 +22,7 @@ import com.example.member.domain.Member;
 import com.example.order.application.dto.req.CreateOrderReqDto;
 import com.example.order.application.port.out.OrderItemRepository;
 import com.example.order.application.port.out.OrderRepository;
+import com.example.order.common.exception.NotFoundException;
 import com.example.order.domain.Address;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderItem;
@@ -73,5 +74,24 @@ class OrderServiceTest {
 		then(orderRepository).should().save(any(Order.class));
 		then(orderItemRepository).should().save(any(OrderItem.class));
 		assertThat(result).isNotNull();
+	}
+
+	@DisplayName("주문 등록 시 사용자를 찾을 수 없는 경우 예외 발생")
+	@Test
+	public void createOrderWhenMemberNotFound() {
+		// given
+		Long userId = 1L;
+
+		Product product = new Product(1L, "상품", "설명", BigDecimal.valueOf(10000), 10, null, null);
+		CreateOrderReqDto createOrderReqDto = new CreateOrderReqDto(product.getId(), 2);
+
+		List<CreateOrderReqDto> createOrderReqDtos = List.of(createOrderReqDto);
+
+		given(memberRepository.findById(userId)).willReturn(Optional.empty());
+
+		// when & then
+		assertThatThrownBy(() -> orderService.createOrder(createOrderReqDtos, userId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining("사용자를 찾을 수 없습니다.");
 	}
 }
