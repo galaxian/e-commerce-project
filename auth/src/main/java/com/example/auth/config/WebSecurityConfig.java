@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.auth.LoginFilter;
+import com.example.auth.jwt.JwtFilter;
 import com.example.auth.jwt.JwtUtil;
 
 @Configuration
@@ -63,6 +64,7 @@ public class WebSecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/login", "/signup", "/", "products", "products/**").permitAll()
 				.anyRequest().authenticated())
+			.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();

@@ -33,6 +33,16 @@ public class JwtUtil {
 			.compact();
 	}
 
+	public Boolean isExpired(String token) {
+		return Jwts.parserBuilder()
+			.setSigningKey(secretKey)
+			.build()
+			.parseClaimsJws(token)
+			.getBody()
+			.getExpiration()
+			.before(new Date());
+	}
+
 	public Long getId(String token) {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
