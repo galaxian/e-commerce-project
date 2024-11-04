@@ -94,4 +94,26 @@ class OrderServiceTest {
 			.isInstanceOf(NotFoundException.class)
 			.hasMessageContaining("사용자를 찾을 수 없습니다.");
 	}
+
+	@DisplayName("주문 등록 시 상품 목록을 찾을 수 없는 경우 예외 발생")
+	@Test
+	public void createOrderWhenProductNotFound() {
+		// Given
+		Long userId = 1L;
+
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);
+		Product product = new Product(1L, "상품", "설명", BigDecimal.valueOf(10000), 10, null, null);
+		CreateOrderReqDto createOrderReqDto = new CreateOrderReqDto(product.getId(), 2);
+
+		List<CreateOrderReqDto> createOrderReqDtos = List.of(createOrderReqDto);
+
+		given(memberRepository.findById(userId)).willReturn(Optional.of(member));
+		given(productRepository.findAllById(any())).willReturn(List.of());
+
+		// When & Then
+		assertThatThrownBy(() -> orderService.createOrder(createOrderReqDtos, userId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining("상품을 찾을 수 없습니다.");
+	}
 }
