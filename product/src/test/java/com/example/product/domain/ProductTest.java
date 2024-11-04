@@ -29,4 +29,15 @@ class ProductTest {
 		//then
 		assertThat(result).isTrue();
 	}
+
+	@DisplayName("재고 수 이상 구매 시 구매 가능 여부 검증 실패")
+	@ParameterizedTest
+	@ValueSource(ints = {11, 20, 100})
+	void failIsSufficientStockOver(int quantity) {
+		//when
+		Boolean result = product.isSufficientStock(quantity);
+
+		//then
+		assertThat(result).isTrue();
+	}
 }
