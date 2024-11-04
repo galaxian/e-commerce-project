@@ -26,4 +26,8 @@ public class Product {
 		this.createAt = createAt;
 		this.updateAt = updateAt;
 	}
+
+	public Boolean isSufficientStock(int quantity) {
+		return quantity <= stock;
+	}
 }

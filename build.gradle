@@ -26,17 +26,7 @@ repositories {
 dependencies {
 }
 
-jar {
-    enabled = false
-}
-
-
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-project(":member") {
-    dependencies {
-
-    }
-}
