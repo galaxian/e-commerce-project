@@ -3,7 +3,7 @@ package com.example.order.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.example.member.member.domain.Member;
+import com.example.member.domain.Member;
 
 import lombok.Getter;
 

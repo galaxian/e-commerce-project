@@ -3,7 +3,7 @@ package com.example.order.infrastructure.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.example.member.member.infrastructure.entity.MemberEntity;
+import com.example.member.infrastructure.entity.MemberEntity;
 import com.example.order.common.entity.BaseEntity;
 import com.example.order.domain.Address;
 import com.example.order.domain.Order;
