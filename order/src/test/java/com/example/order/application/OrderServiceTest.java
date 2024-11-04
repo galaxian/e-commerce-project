@@ -22,6 +22,7 @@ import com.example.member.domain.Member;
 import com.example.order.application.dto.req.CreateOrderReqDto;
 import com.example.order.application.port.out.OrderItemRepository;
 import com.example.order.application.port.out.OrderRepository;
+import com.example.order.common.exception.BadRequestException;
 import com.example.order.common.exception.NotFoundException;
 import com.example.order.domain.Address;
 import com.example.order.domain.Order;
@@ -115,5 +116,26 @@ class OrderServiceTest {
 		assertThatThrownBy(() -> orderService.createOrder(createOrderReqDtos, userId))
 			.isInstanceOf(NotFoundException.class)
 			.hasMessageContaining("상품을 찾을 수 없습니다.");
+	}
+
+	@DisplayName("주문 등록 시 재고가 부족한 경우 예외 발생")
+	@Test
+	public void createOrderWhenStockIsNotEnough() {
+		// given
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);
+		Product product = new Product(1L, "상품", "설명", BigDecimal.valueOf(10000), 1, null, null);
+		CreateOrderReqDto createOrderReqDto = new CreateOrderReqDto(product.getId(), 2);
+
+		Long userId = 1L;
+		List<CreateOrderReqDto> createOrderReqDtos = Collections.singletonList(createOrderReqDto);
+
+		given(memberRepository.findById(userId)).willReturn(Optional.of(member));
+		given(productRepository.findAllById(any())).willReturn(Collections.singletonList(product));
+
+		// when & then
+		assertThatThrownBy(() -> orderService.createOrder(createOrderReqDtos, userId))
+			.isInstanceOf(BadRequestException.class)
+			.hasMessageContaining("재고가 부족합니다.");
 	}
 }
