@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.member.member.application.port.out.MemberRepository;
-import com.example.member.member.domain.Member;
+import com.example.member.application.port.out.MemberRepository;
+import com.example.member.domain.Member;
 import com.example.order.application.dto.req.CreateOrderReqDto;
 import com.example.order.application.port.in.CreateOrderUseCase;
 import com.example.order.application.port.out.OrderItemRepository;
 import com.example.order.application.port.out.OrderRepository;
+import com.example.order.common.exception.NotFoundException;
 import com.example.order.domain.Address;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderItem;
 import com.example.product.application.port.out.ProductRepository;
-import com.example.product.common.exception.ProductNotFoundException;
 import com.example.product.domain.Product;
 
 @Service
@@ -52,7 +52,7 @@ public class OrderService implements CreateOrderUseCase {
 
 	private Member findMemberById(Long userId) {
 		return memberRepository.findById(userId)
-			.orElseThrow(() -> new RuntimeException("Member not found with ID: " + userId));
+			.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 	}
 
 	private Map<Long, Product> fetchProductsByIds(List<CreateOrderReqDto> createOrderReqDtos) {
@@ -60,17 +60,23 @@ public class OrderService implements CreateOrderUseCase {
 			.map(CreateOrderReqDto::productId)
 			.collect(Collectors.toList());
 
-		return productRepository.findAllById(productIds).stream()
+		Map<Long, Product> productMap = productRepository.findAllById(productIds).stream()
 			.collect(Collectors.toMap(Product::getId, product -> product));
+
+		List<Long> missingProductIds = productIds.stream()
+			.filter(id -> !productMap.containsKey(id))
+			.toList();
+
+		if (!missingProductIds.isEmpty()) {
+			throw new NotFoundException("상품을 찾을 수 없습니다. 대상 상품 ID: " + missingProductIds);
+		}
+
+		return productMap;
 	}
 
 	private BigDecimal calculateTotalAmount(List<CreateOrderReqDto> createOrderReqDtos, Map<Long, Product> productMap) {
 		return createOrderReqDtos.stream()
-			.map(dto -> {
-				Product product = productMap.get(dto.productId());
-				if (product == null) throw new ProductNotFoundException("Product not found with ID: " + dto.productId());
-				return product.getPrice().multiply(BigDecimal.valueOf(dto.quantity()));
-			})
+			.map(dto -> productMap.get(dto.productId()).getProductPrice().multiply(BigDecimal.valueOf(dto.quantity())))
 			.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
@@ -84,9 +90,8 @@ public class OrderService implements CreateOrderUseCase {
 	private void createAndSaveOrderItems(List<CreateOrderReqDto> createOrderReqDtos, Order order, Map<Long, Product> productMap) {
 		for (CreateOrderReqDto dto : createOrderReqDtos) {
 			Product product = productMap.get(dto.productId());
-			if (product == null) throw new ProductNotFoundException("Product not found with ID: " + dto.productId());
 
-			OrderItem orderItem = new OrderItem(product.getPrice(), dto.quantity(), order, product);
+			OrderItem orderItem = new OrderItem(product.getProductPrice(), dto.quantity(), order, product);
 			orderItemRepository.save(orderItem);
 		}
 	}
