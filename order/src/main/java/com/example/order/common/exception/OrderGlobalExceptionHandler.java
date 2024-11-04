@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class OrderGlobalExceptionHandler {
 
 	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleRuntimeExceptions(NotFoundException e) {
+	public ResponseEntity<ErrorResponse> handleNotFoundExceptions(NotFoundException e) {
 		ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
 		return ResponseEntity.status(NOT_FOUND).body(errorResponse);
+	}
+
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<ErrorResponse> handleBadRequestExceptions(BadRequestException e) {
+		ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+		return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
 	}
 
 	@ExceptionHandler(Exception.class)
