@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.member.domain.Member;
+import com.example.order.common.exception.BadRequestException;
 
 import lombok.Getter;
 
@@ -38,5 +39,20 @@ public class Order {
 		this.createAt = createAt;
 		this.updateAt = updateAt;
 		this.member = member;
+	}
+
+	public boolean isPending() {
+		return orderStatus == OrderStatus.PENDING;
+	}
+
+	public void cancel() {
+		validateCancellation();
+		this.orderStatus = OrderStatus.CANCELLED;
+	}
+
+	private void validateCancellation() {
+		if (!isPending()) {
+			throw new BadRequestException("주문을 취소할 수 있는 상태가 아닙니다.");
+		}
 	}
 }
