@@ -13,9 +13,24 @@ class OrderTest {
 
 	@DisplayName("주문이 결제 대기 상태인 경우 주문 취소 가능")
 	@Test
-	void cancelOrder() {
+	void cancelOrderWhenOrderStatusIsPending() {
 		//given
 		Order order = new Order(1L, BigDecimal.valueOf(100), OrderStatus.PENDING,
+			new Address("state", "Street", "City", "Zip"),
+			LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null);
+
+		//when
+		order.cancel();
+
+		//then
+		assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CANCELLED);
+	}
+
+	@DisplayName("주문이 배송 대기 상태인 경우 주문 취소 가능")
+	@Test
+	void cancelOrderWhenOrderStatusIsAwaitingShipment() {
+		//given
+		Order order = new Order(1L, BigDecimal.valueOf(100), OrderStatus.AWAITING_SHIPMENT,
 			new Address("state", "Street", "City", "Zip"),
 			LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null);
 
