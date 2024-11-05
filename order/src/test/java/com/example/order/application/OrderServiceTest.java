@@ -197,4 +197,19 @@ class OrderServiceTest {
 			.isInstanceOf(BadRequestException.class)
 			.hasMessage("주문 취소는 배송시작 전까지만 가능합니다.");
 	}
+
+	@DisplayName("주문 취소 주문이 없는 경우 예외 발생")
+	@Test
+	void cancelOrder_ShouldThrowNotFoundException_WhenOrderNotFound() {
+		// given
+		Long orderId = 1L;
+		Long memberId = 1L;
+
+		given(orderRepository.findByOrderIdAndMemberId(orderId, memberId)).willReturn(Optional.empty());
+
+		// when & then
+		assertThatThrownBy(() -> orderService.cancelOrder(orderId, memberId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessage("주문을 찾을 수 없습니다.");
+	}
 }
