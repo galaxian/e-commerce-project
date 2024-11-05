@@ -1,6 +1,7 @@
 package com.example.order.infrastructure.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +28,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 		return orderJpaRepository.findAllByMemberEntityId(memberId).stream()
 			.map(OrderEntity::toOrderDomain)
 			.toList();
+	}
+
+	@Override
+	public Optional<Order> findByOrderIdAndMemberId(Long orderId, Long memberId) {
+		return orderJpaRepository.findByIdAndMemberEntityId(orderId, memberId)
+			.map(OrderEntity::toOrderDomain);
 	}
 }

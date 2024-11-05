@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.member.domain.Member;
+import com.example.order.common.exception.BadRequestException;
 
 import lombok.Getter;
 
@@ -38,5 +39,16 @@ public class Order {
 		this.createAt = createAt;
 		this.updateAt = updateAt;
 		this.member = member;
+	}
+
+	public void cancel() {
+		validateCancellation();
+		this.orderStatus = OrderStatus.CANCELLED;
+	}
+
+	private void validateCancellation() {
+		if (!orderStatus.isCancelable()) {
+			throw new BadRequestException("주문 취소는 배송시작 전까지만 가능합니다.");
+		}
 	}
 }

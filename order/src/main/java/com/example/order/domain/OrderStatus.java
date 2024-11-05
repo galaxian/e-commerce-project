@@ -2,8 +2,12 @@ package com.example.order.domain;
 
 public enum OrderStatus {
 	PENDING,
-	PAYMENT,
+	AWAITING_SHIPMENT,
 	SHIPPED,
 	DELIVERED,
-	CANCELLED,
+	CANCELLED;
+
+	public boolean isCancelable() {
+		return this == PENDING || this == AWAITING_SHIPMENT;
+	}
 }
