@@ -41,18 +41,14 @@ public class Order {
 		this.member = member;
 	}
 
-	public boolean isPending() {
-		return orderStatus == OrderStatus.PENDING;
-	}
-
 	public void cancel() {
 		validateCancellation();
 		this.orderStatus = OrderStatus.CANCELLED;
 	}
 
 	private void validateCancellation() {
-		if (!isPending()) {
-			throw new BadRequestException("주문을 취소할 수 있는 상태가 아닙니다.");
+		if (!orderStatus.isCancelable()) {
+			throw new BadRequestException("주문 취소는 배송시작 전까지만 가능합니다.");
 		}
 	}
 }
