@@ -138,4 +138,24 @@ class OrderServiceTest {
 			.isInstanceOf(BadRequestException.class)
 			.hasMessageContaining("재고가 부족합니다.");
 	}
+
+	@DisplayName("결제 대기 상태에서 주문 취소 성공")
+	@Test
+	void cancelOrder() {
+		// given
+		Long orderId = 1L;
+		Long memberId = 1L;
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);
+		Order order = new Order(orderId, BigDecimal.valueOf(100), OrderStatus.PENDING, new Address("state", "Street", "City", "Zip"),
+			LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), member);
+
+		given(orderRepository.findByOrderIdAndMemberId(orderId, memberId)).willReturn(Optional.of(order));
+
+		// when
+		orderService.cancelOrder(orderId, memberId);
+
+		// then
+		assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CANCELLED);
+	}
 }
