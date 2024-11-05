@@ -50,6 +50,8 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 		createAndSaveOrderItems(createOrderReqDtos, order, productMap);
 
 		return order.getId();
+
+		// todo : 결제 정보 생성 로직 필요
 	}
 
 	@Override
@@ -61,6 +63,8 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 		findOrder.cancel();
 
 		orderRepository.save(findOrder);
+
+		//todo : 결제가 완료된 경우 환불 로직 구현 필요
 	}
 
 	private Member findMemberById(Long userId) {
