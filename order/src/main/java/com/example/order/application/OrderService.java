@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.member.application.port.out.MemberRepository;
 import com.example.member.domain.Member;
 import com.example.order.application.dto.req.CreateOrderReqDto;
+import com.example.order.application.port.in.CancelOrderUseCase;
 import com.example.order.application.port.in.CreateOrderUseCase;
 import com.example.order.application.port.out.OrderItemRepository;
 import com.example.order.application.port.out.OrderRepository;
@@ -24,7 +25,7 @@ import com.example.product.domain.Product;
 
 @Service
 @Transactional
-public class OrderService implements CreateOrderUseCase {
+public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 
 	private final OrderRepository orderRepository;
 	private final OrderItemRepository orderItemRepository;
@@ -49,6 +50,17 @@ public class OrderService implements CreateOrderUseCase {
 		createAndSaveOrderItems(createOrderReqDtos, order, productMap);
 
 		return order.getId();
+	}
+
+	@Override
+	public void cancelOrder(Long orderId, Long memberId) {
+		Order findOrder = orderRepository.findByOrderIdAndMemberId(orderId, memberId).orElseThrow(
+			() -> new NotFoundException("주문을 찾을 수 없습니다.")
+		);
+
+		findOrder.cancel();
+
+		orderRepository.save(findOrder);
 	}
 
 	private Member findMemberById(Long userId) {
