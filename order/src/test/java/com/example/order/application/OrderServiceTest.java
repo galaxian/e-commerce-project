@@ -178,4 +178,23 @@ class OrderServiceTest {
 		// then
 		assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CANCELLED);
 	}
+
+	@DisplayName("주문 취소할 경우 주문 상태가 배송 이후인 경우 예외 발생")
+	@Test
+	void cancelOrderWhenOrderStatusIsNotPendingOrAwaitingShipment() {
+		// given
+		Long orderId = 1L;
+		Long memberId = 1L;
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);
+		Order order = new Order(orderId, BigDecimal.valueOf(100), OrderStatus.DELIVERED, new Address("state", "Street", "City", "Zip"),
+			LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), member);
+
+		given(orderRepository.findByOrderIdAndMemberId(orderId, memberId)).willReturn(Optional.of(order));
+
+		// when & then
+		assertThatThrownBy(() -> orderService.cancelOrder(orderId, memberId))
+			.isInstanceOf(BadRequestException.class)
+			.hasMessage("주문 취소는 배송시작 전까지만 가능합니다.");
+	}
 }
