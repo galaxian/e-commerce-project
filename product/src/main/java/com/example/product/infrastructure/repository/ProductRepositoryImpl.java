@@ -13,12 +13,9 @@ import com.example.product.infrastructure.entity.ProductEntity;
 public class ProductRepositoryImpl implements ProductRepository {
 
 	private final ProductJpaRepository productJpaRepository;
-	private final ProductRedisRepository productRedisRepository;
 
-	public ProductRepositoryImpl(ProductJpaRepository productJpaRepository,
-		ProductRedisRepository productRedisRepository) {
+	public ProductRepositoryImpl(ProductJpaRepository productJpaRepository) {
 		this.productJpaRepository = productJpaRepository;
-		this.productRedisRepository = productRedisRepository;
 	}
 
 	@Override
@@ -36,26 +33,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 	public List<Product> findAllById(List<Long> productIds) {
 		List<ProductEntity> productEntityList = productJpaRepository.findAllById(productIds);
 		return convertToDomain(productEntityList);
-	}
-
-	@Override
-	public Optional<Integer> getProductStock(Long productId) {
-		return productRedisRepository.getStock(productId);
-	}
-
-	@Override
-	public void saveStock(Product product) {
-		productRedisRepository.saveStock(product.getId(), product.getStock());
-	}
-
-	@Override
-	public void increaseStock(Long productId, Integer quantity) {
-		productRedisRepository.increaseStock(productId, quantity);
-	}
-
-	@Override
-	public void decreaseStock(Long productId, Integer quantity) {
-		productRedisRepository.decreaseStock(productId, quantity);
 	}
 
 	private List<Product> convertToDomain(List<ProductEntity> productEntityList) {

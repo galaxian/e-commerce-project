@@ -19,6 +19,6 @@ public class ProductGlobalExceptionHandler extends ResponseEntityExceptionHandle
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleAllException(Exception e) {
 		ErrorResponse errorResponse = new ErrorResponse("예상치 못한 서버 오류가 발생했습니다.");
-		return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorResponse);
+		return ResponseEntity.status(NOT_FOUND).body(errorResponse);
 	}
 }
