@@ -43,6 +43,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 		return productRedisRepository.getStock(productId);
 	}
 
+	@Override
+	public void saveStock(Product product) {
+		productRedisRepository.saveStock(product.getId(), product.getStock());
+	}
+
 	private List<Product> convertToDomain(List<ProductEntity> productEntityList) {
 		return productEntityList.stream()
 			.map(ProductEntity::toDomain)

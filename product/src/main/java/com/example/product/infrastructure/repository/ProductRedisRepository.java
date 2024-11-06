@@ -20,4 +20,8 @@ public class ProductRedisRepository {
 		return Optional.ofNullable(redisTemplate.opsForValue().get(key));
 	}
 
+	public void saveStock(Long productId, Integer stock) {
+		String key = PRODUCT_STOCK_PREFIX + productId;
+		redisTemplate.opsForValue().set(key, stock);
+	}
 }

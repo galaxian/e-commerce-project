@@ -12,4 +12,5 @@ public interface ProductRepository {
 	List<Product> findAllById(List<Long> productIds);
 
 	Optional<Integer> getProductStock(Long id);
+	void saveStock(Product product);
 }
