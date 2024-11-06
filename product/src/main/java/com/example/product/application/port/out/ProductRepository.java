@@ -13,4 +13,6 @@ public interface ProductRepository {
 
 	Optional<Integer> getProductStock(Long id);
 	void saveStock(Product product);
+	void increaseStock(Long productId, Integer quantity);
+	void decreaseStock(Long productId, Integer quantity);
 }

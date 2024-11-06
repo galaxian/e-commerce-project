@@ -24,4 +24,14 @@ public class ProductRedisRepository {
 		String key = PRODUCT_STOCK_PREFIX + productId;
 		redisTemplate.opsForValue().set(key, stock);
 	}
+
+	public void increaseStock(Long productId, Integer quantity) {
+		String key = PRODUCT_STOCK_PREFIX + productId;
+		redisTemplate.opsForValue().increment(key, quantity);
+	}
+
+	public void decreaseStock(Long productId, Integer quantity) {
+		String key = PRODUCT_STOCK_PREFIX + productId;
+		redisTemplate.opsForValue().decrement(key, quantity);
+	}
 }
