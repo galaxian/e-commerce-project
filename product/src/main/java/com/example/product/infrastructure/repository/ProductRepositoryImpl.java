@@ -13,9 +13,12 @@ import com.example.product.infrastructure.entity.ProductEntity;
 public class ProductRepositoryImpl implements ProductRepository {
 
 	private final ProductJpaRepository productJpaRepository;
+	private final ProductRedisRepository productRedisRepository;
 
-	public ProductRepositoryImpl(ProductJpaRepository productJpaRepository) {
+	public ProductRepositoryImpl(ProductJpaRepository productJpaRepository,
+		ProductRedisRepository productRedisRepository) {
 		this.productJpaRepository = productJpaRepository;
+		this.productRedisRepository = productRedisRepository;
 	}
 
 	@Override
@@ -33,6 +36,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 	public List<Product> findAllById(List<Long> productIds) {
 		List<ProductEntity> productEntityList = productJpaRepository.findAllById(productIds);
 		return convertToDomain(productEntityList);
+	}
+
+	@Override
+	public Optional<Integer> getProductStock(Long productId) {
+		return productRedisRepository.getStock(productId);
 	}
 
 	private List<Product> convertToDomain(List<ProductEntity> productEntityList) {

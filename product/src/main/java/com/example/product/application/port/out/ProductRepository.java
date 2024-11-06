@@ -10,4 +10,6 @@ public interface ProductRepository {
 	List<Product> findAll();
 	Optional<Product> findById(Long id);
 	List<Product> findAllById(List<Long> productIds);
+
+	Optional<Integer> getProductStock(Long id);
 }
