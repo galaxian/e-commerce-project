@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: [member, product, order]
+        module: [member, product, order, payment]
 
     steps:
       - name: checkout Repository
