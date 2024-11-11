@@ -42,6 +42,20 @@ services:
     depends_on:
       - db
 
+  payment-service:
+    restart: always
+    build:
+      context: .
+      dockerfile: payment/Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    depends_on:
+      - db
+
   db:
     image: mysql:latest
     ports:
