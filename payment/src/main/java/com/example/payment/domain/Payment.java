@@ -27,4 +27,17 @@ public class Payment {
 		this.order = order;
 		this.member = member;
 	}
+
+	public Payment(Long id, BigDecimal paymentAmount, PaymentStatus paymentStatus, PaymentMethod paymentMethod,
+		LocalDateTime paymentDate, Order order, Member member, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.id = id;
+		this.paymentAmount = paymentAmount;
+		this.paymentStatus = paymentStatus;
+		this.paymentMethod = paymentMethod;
+		this.paymentDate = paymentDate;
+		this.order = order;
+		this.member = member;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 }
