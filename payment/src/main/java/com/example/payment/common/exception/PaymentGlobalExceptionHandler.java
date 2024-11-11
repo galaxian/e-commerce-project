@@ -15,13 +15,6 @@ public class PaymentGlobalExceptionHandler {
 		return ResponseEntity.status(NOT_FOUND).body(errorResponse);
 	}
 
-	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<ErrorResponse> handleBadRequestExceptions(
-		BadRequestException e) {
-		ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-		return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
-	}
-
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
 		ErrorResponse errorResponse = new ErrorResponse("예상치 못한 서버 오류가 발생했습니다.");
