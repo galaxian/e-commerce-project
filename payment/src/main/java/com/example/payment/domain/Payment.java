@@ -20,4 +20,11 @@ public class Payment {
 	private Member member;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+
+	public Payment(Order order, Member member) {
+		this.paymentAmount = order.getTotalAmount();
+		this.paymentStatus = PaymentStatus.PENDING;
+		this.order = order;
+		this.member = member;
+	}
 }
