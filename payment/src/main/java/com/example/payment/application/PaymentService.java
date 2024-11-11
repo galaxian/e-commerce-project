@@ -30,17 +30,22 @@ public class PaymentService implements CreatePaymentUseCase {
 	@Override
 	public Long createPayment(Long orderId, Long memberId) {
 
-		Order findOrder = orderRepository.findByOrderIdAndMemberId(orderId, memberId).orElseThrow(
-			() -> new NotFoundException("주문을 찾을 수 없습니다.")
-		);
-
-		Member findMember = memberRepository.findById(memberId).orElseThrow(
-			() -> new NotFoundException("사용자를 찾을 수 없습니다.")
-		);
+		Order findOrder = findOrderByOrderIdAndMemberId(orderId, memberId);
+		Member findMember = findMemberById(memberId);
 
 		Payment payment = new Payment(findOrder, findMember);
 		Payment savedPayment = paymentRepository.save(payment);
 
 		return savedPayment.getId();
+	}
+
+	private Order findOrderByOrderIdAndMemberId(Long orderId, Long memberId) {
+		return orderRepository.findByOrderIdAndMemberId(orderId, memberId)
+			.orElseThrow(() -> new NotFoundException("주문을 찾을 수 없습니다."));
+	}
+
+	private Member findMemberById(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
 	}
 }
