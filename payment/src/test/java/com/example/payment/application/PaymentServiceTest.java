@@ -92,4 +92,30 @@ class PaymentServiceTest {
 		then(orderRepository).should(times(1)).findByOrderIdAndMemberId(orderId, memberId);
 		then(memberRepository).shouldHaveNoInteractions();
 	}
+
+	@DisplayName("결제를 생성할 때 사용자를 찾을 수 없는 경우 예외 발생")
+	@Test
+	void createPaymentWhenMemberNotFound() {
+		// Given
+		Long orderId = 1L;
+		Long memberId = 1L;
+
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);;
+		Order order = new Order(1L, BigDecimal.valueOf(15000), OrderStatus.PENDING, new Address("서울", "ㅁㅁㅁ", "강남", "12345"),
+			LocalDateTime.now(), null, null, member);
+
+		given(orderRepository.findByOrderIdAndMemberId(orderId, memberId))
+			.willReturn(Optional.of(order));
+		given(memberRepository.findById(memberId))
+			.willReturn(Optional.empty());
+
+		// When & Then
+		assertThatThrownBy(() -> paymentService.createPayment(orderId, memberId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining("사용자를 찾을 수 없습니다.");
+
+		then(orderRepository).should(times(1)).findByOrderIdAndMemberId(orderId, memberId);
+		then(memberRepository).should(times(1)).findById(memberId);
+	}
 }
