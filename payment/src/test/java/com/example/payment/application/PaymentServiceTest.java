@@ -22,6 +22,7 @@ import com.example.order.domain.Address;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderStatus;
 import com.example.payment.application.port.out.PaymentRepository;
+import com.example.payment.common.exception.NotFoundException;
 import com.example.payment.domain.Payment;
 import com.example.payment.domain.PaymentStatus;
 
@@ -71,5 +72,24 @@ class PaymentServiceTest {
 		then(orderRepository).should(times(1)).findByOrderIdAndMemberId(orderId, memberId);
 		then(memberRepository).should(times(1)).findById(memberId);
 		then(paymentRepository).should(times(1)).save(any(Payment.class));
+	}
+
+	@DisplayName("결제를 생성할 때 주문을 찾을 수 없는 경우 예외 발생")
+	@Test
+	void createPaymentWhenOrderNotFound() {
+		// Given
+		Long orderId = 1L;
+		Long memberId = 1L;
+
+		given(orderRepository.findByOrderIdAndMemberId(orderId, memberId))
+			.willReturn(Optional.empty());
+
+		// When & Then
+		assertThatThrownBy(() -> paymentService.createPayment(orderId, memberId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining("주문을 찾을 수 없습니다.");
+
+		then(orderRepository).should(times(1)).findByOrderIdAndMemberId(orderId, memberId);
+		then(memberRepository).shouldHaveNoInteractions();
 	}
 }
