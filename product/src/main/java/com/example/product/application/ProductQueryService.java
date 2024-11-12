@@ -13,7 +13,7 @@ import com.example.product.application.port.out.ProductRepository;
 import com.example.product.common.exception.NotFoundException;
 import com.example.product.domain.Product;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class ProductQueryService implements FindAllProductUseCase, FindProductUseCase {
 
@@ -23,14 +23,12 @@ public class ProductQueryService implements FindAllProductUseCase, FindProductUs
 		this.productRepository = productRepository;
 	}
 
-	@Transactional(readOnly = true)
 	@Override
 	public List<FindAllProductResDto> findAllProduct() {
 		List<Product> productList = productRepository.findAll();
 		return convertToDto(productList);
 	}
 
-	@Transactional(readOnly = true)
 	@Override
 	public FindProductResDto findProduct(Long productId) {
 		Product product = getProductById(productId);
