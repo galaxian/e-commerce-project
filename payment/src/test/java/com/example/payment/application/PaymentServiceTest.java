@@ -144,4 +144,20 @@ class PaymentServiceTest {
 		assertThat(payment.getPaymentDate()).isNotNull();
 		then(paymentRepository).should(times(1)).findById(1L);
 	}
+
+	@DisplayName("결제 진행 시 결제정보가 없는 경우 예외 발생")
+	@Test
+	void executePaymentWhenPaymentDoesNotExist() {
+		// given
+		Long paymentId = 1L;
+		Long memberId = 1L;
+
+		given(paymentRepository.findById(paymentId)).willReturn(Optional.empty());
+
+		// when & then
+		assertThatThrownBy(() -> paymentService.executePaymentUseCase(paymentId, memberId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining("결제 정보를 찾을 수 없습니다.");
+	}
+
 }
