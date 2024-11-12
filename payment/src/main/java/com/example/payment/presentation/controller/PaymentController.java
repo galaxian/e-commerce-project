@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.auth.CustomUserDetails;
 import com.example.payment.application.port.in.CreatePaymentUseCase;
+import com.example.payment.application.port.in.ExecutePaymentUseCase;
 
 @RestController
 public class PaymentController {
 
 	private final CreatePaymentUseCase createPaymentUseCase;
+	private final ExecutePaymentUseCase executePaymentUseCase;
 
-	public PaymentController(CreatePaymentUseCase createPaymentUseCase) {
+	public PaymentController(CreatePaymentUseCase createPaymentUseCase, ExecutePaymentUseCase executePaymentUseCase) {
 		this.createPaymentUseCase = createPaymentUseCase;
+		this.executePaymentUseCase = executePaymentUseCase;
 	}
 
 	@PostMapping("/orders/{orderId}/payment")
@@ -26,5 +29,13 @@ public class PaymentController {
 		Long memberId = principal.getId();
 		Long paymentId = createPaymentUseCase.createPayment(memberId, orderId);
 		return ResponseEntity.created(URI.create("/payment/" + paymentId)).build();
+	}
+
+	@PostMapping("/payment/{paymentId}/execute")
+	public ResponseEntity<Void> executePayment(@PathVariable("paymentId") Long paymentId,
+		@AuthenticationPrincipal CustomUserDetails principal
+	) {
+		executePaymentUseCase.executePaymentUseCase(paymentId, paymentId);
+		return ResponseEntity.noContent().build();
 	}
 }

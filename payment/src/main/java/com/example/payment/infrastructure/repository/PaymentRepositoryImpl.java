@@ -1,5 +1,7 @@
 package com.example.payment.infrastructure.repository;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.payment.application.port.out.PaymentRepository;
@@ -18,5 +20,10 @@ public class PaymentRepositoryImpl implements PaymentRepository {
 	@Override
 	public Payment save(Payment payment) {
 		return paymentJpaRepository.save(PaymentEntity.from(payment)).toPaymentDomain();
+	}
+
+	@Override
+	public Optional<Payment> findById(Long paymentId) {
+		return paymentJpaRepository.findById(paymentId).map(PaymentEntity::toPaymentDomain);
 	}
 }
