@@ -79,4 +79,23 @@ class PaymentTest {
 		assertThat(payment.getPaymentDate()).isNotNull();
 
 	}
+
+	@DisplayName("이미 처리된 결제인 경우 예외 발생")
+	@Test
+	void successPaymentWhenPaymentIsNotPending() {
+		//given
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);;
+		Order order = new Order(1L, BigDecimal.valueOf(15000), OrderStatus.PENDING, new Address("서울", "ㅁㅁㅁ", "강남", "12345"),
+			LocalDateTime.now(), null, null, member);
+
+		Payment payment = new Payment(1L, BigDecimal.valueOf(15000), PaymentStatus.SUCCESS, null, null, order, member,
+			null, null);
+
+		// when & then
+		assertThatThrownBy(payment::successPayment)
+			.isInstanceOf(BadRequestException.class)
+			.hasMessageContaining("이미 처리된 결제입니다.");
+
+	}
 }
