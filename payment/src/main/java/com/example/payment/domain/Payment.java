@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.example.member.domain.Member;
 import com.example.order.domain.Order;
+import com.example.payment.common.exception.BadRequestException;
 
 import lombok.Getter;
 
@@ -42,6 +43,10 @@ public class Payment {
 	}
 
 	public void successPayment() {
+		if (!(this.paymentStatus == PaymentStatus.PENDING)) {
+			throw new BadRequestException("이미 처리된 결제입니다.");
+		}
+
 		this.paymentStatus = PaymentStatus.SUCCESS;
 		this.paymentMethod = PaymentMethod.CARD;
 		this.paymentDate = LocalDateTime.now();
