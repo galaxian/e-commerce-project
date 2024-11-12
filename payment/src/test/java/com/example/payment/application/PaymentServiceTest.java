@@ -185,4 +185,27 @@ class PaymentServiceTest {
 			.isInstanceOf(BadRequestException.class)
 			.hasMessageContaining("해당 결제 요청 권한이 없습니다.");
 	}
+
+	@DisplayName("이미 처리된 결제인 경우 예외 발생")
+	@Test
+	void executePaymentsWhenPaymentIsAlreadyCompleted() {
+		// Given
+		Long paymentId = 1L;
+		Long memberId = 1L;
+
+		Member member = new Member(1L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);;
+		Order order = new Order(1L, BigDecimal.valueOf(15000), OrderStatus.PENDING, new Address("서울", "ㅁㅁㅁ", "강남", "12345"),
+			LocalDateTime.now(), null, null, member);
+
+		Payment payment = new Payment(1L, BigDecimal.valueOf(15000), PaymentStatus.SUCCESS, null, null, order, member,
+			null, null);
+
+		given(paymentRepository.findById(1L)).willReturn(Optional.of(payment));
+
+		// when & then
+		assertThatThrownBy(() -> paymentService.executePaymentUseCase(paymentId, memberId))
+			.isInstanceOf(BadRequestException.class)
+			.hasMessageContaining("이미 처리된 결제입니다.");
+	}
 }
