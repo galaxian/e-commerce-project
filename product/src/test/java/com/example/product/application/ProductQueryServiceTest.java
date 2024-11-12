@@ -23,13 +23,13 @@ import com.example.product.common.exception.NotFoundException;
 import com.example.product.domain.Product;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductQueryServiceTest {
 
 	@Mock
 	private ProductRepository productRepository;
 
 	@InjectMocks
-	private ProductService productService;
+	private ProductQueryService productQueryService;
 
 	@DisplayName("상품 목록이 없는 경우 빈 리스트 반환")
 	@Test
@@ -39,7 +39,7 @@ class ProductServiceTest {
 			.willReturn(Collections.emptyList());
 
 	    //when
-		List<FindAllProductResDto> result = productService.findAllProduct();
+		List<FindAllProductResDto> result = productQueryService.findAllProduct();
 
 		//then
 		assertThat(result).isEmpty();
@@ -58,7 +58,7 @@ class ProductServiceTest {
 		given(productRepository.findAll()).willReturn(productList);
 
 		// when
-		List<FindAllProductResDto> result = productService.findAllProduct();
+		List<FindAllProductResDto> result = productQueryService.findAllProduct();
 
 		// then
 		assertThat(result)
@@ -82,7 +82,7 @@ class ProductServiceTest {
 			.willReturn(Optional.of(product));
 
 		// when
-		FindProductResDto result = productService.findProduct(productId);
+		FindProductResDto result = productQueryService.findProduct(productId);
 
 		// then
 		assertThat(result).isNotNull();
@@ -105,7 +105,7 @@ class ProductServiceTest {
 		// when
 		// then
 		assertThatThrownBy(
-			() -> productService.findProduct(productId)
+			() -> productQueryService.findProduct(productId)
 		).isInstanceOf(NotFoundException.class);
 	}
 

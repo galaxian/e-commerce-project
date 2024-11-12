@@ -15,11 +15,11 @@ import com.example.product.domain.Product;
 
 @Transactional
 @Service
-public class ProductService implements FindAllProductUseCase, FindProductUseCase {
+public class ProductQueryService implements FindAllProductUseCase, FindProductUseCase {
 
 	private final ProductRepository productRepository;
 
-	public ProductService(ProductRepository productRepository) {
+	public ProductQueryService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
 
