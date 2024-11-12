@@ -39,6 +39,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 	}
 
 	@Override
+	public Product save(Product product) {
+		return productJpaRepository.save(ProductEntity.from(product)).toDomain();
+	}
+
+	@Override
 	public Optional<Integer> getProductStock(Long productId) {
 		return productRedisRepository.getStock(productId);
 	}
