@@ -40,4 +40,10 @@ public class Payment {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
+
+	public void successPayment() {
+		this.paymentStatus = PaymentStatus.SUCCESS;
+		this.paymentMethod = PaymentMethod.CARD;
+		this.paymentDate = LocalDateTime.now();
+	}
 }
