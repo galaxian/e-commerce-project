@@ -42,6 +42,12 @@ public class Payment {
 		this.updatedAt = updatedAt;
 	}
 
+	public void validateMember(Long memberId) {
+		if (!this.member.getId().equals(memberId)) {
+			throw new BadRequestException("해당 결제 요청 권한이 없습니다.");
+		}
+	}
+
 	public void successPayment() {
 		if (!(this.paymentStatus == PaymentStatus.PENDING)) {
 			throw new BadRequestException("이미 처리된 결제입니다.");

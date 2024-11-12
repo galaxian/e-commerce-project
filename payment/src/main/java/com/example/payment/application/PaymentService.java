@@ -52,12 +52,18 @@ public class PaymentService implements CreatePaymentUseCase, ExecutePaymentUseCa
 
 	@Override
 	public void executePaymentUseCase(Long paymentId, Long memberId) {
-		Payment findPayment = paymentRepository.findById(paymentId).orElseThrow(
-			() -> new NotFoundException("결제 정보를 찾을 수 없습니다.")
-		);
+		Payment findPayment = findPaymentById(paymentId);
+
+		findPayment.validateMember(memberId);
 
 		findPayment.successPayment();
 
 		paymentRepository.save(findPayment);
+	}
+
+	private Payment findPaymentById(Long paymentId) {
+		return paymentRepository.findById(paymentId).orElseThrow(
+			() -> new NotFoundException("결제 정보를 찾을 수 없습니다.")
+		);
 	}
 }
