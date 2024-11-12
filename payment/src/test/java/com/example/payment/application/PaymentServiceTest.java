@@ -22,6 +22,7 @@ import com.example.order.domain.Address;
 import com.example.order.domain.Order;
 import com.example.order.domain.OrderStatus;
 import com.example.payment.application.port.out.PaymentRepository;
+import com.example.payment.common.exception.BadRequestException;
 import com.example.payment.common.exception.NotFoundException;
 import com.example.payment.domain.Payment;
 import com.example.payment.domain.PaymentStatus;
@@ -160,4 +161,28 @@ class PaymentServiceTest {
 			.hasMessageContaining("결제 정보를 찾을 수 없습니다.");
 	}
 
+	@DisplayName("결제 진행 시 사용자 정보가 일치한지 않는 경우 예외 발생")
+	@Test
+	void executePaymentsWhenMemberDoesNotMatch() {
+		// Given
+		Long paymentId = 1L;
+		Long memberId = 1L;
+
+		Member member = new Member(2L, "암호화 메일", "암호화 이름", "암호화 비밀번호",
+			new com.example.member.domain.Address("서울", "ㅁㅁㅁ", "강남", "12345"), null, null, null);
+		;
+		Order order = new Order(1L, BigDecimal.valueOf(15000), OrderStatus.PENDING,
+			new Address("서울", "ㅁㅁㅁ", "강남", "12345"),
+			LocalDateTime.now(), null, null, member);
+
+		Payment payment = new Payment(1L, BigDecimal.valueOf(15000), PaymentStatus.PENDING, null, null, order, member,
+			null, null);
+
+		given(paymentRepository.findById(paymentId)).willReturn(Optional.of(payment));
+
+		// when & then
+		assertThatThrownBy(() -> paymentService.executePaymentUseCase(paymentId, memberId))
+			.isInstanceOf(BadRequestException.class)
+			.hasMessageContaining("해당 결제 요청 권한이 없습니다.");
+	}
 }
