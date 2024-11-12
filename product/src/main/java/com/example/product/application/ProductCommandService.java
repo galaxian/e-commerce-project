@@ -20,15 +20,27 @@ public class ProductCommandService implements CreateProductUseCase {
 
 	@Override
 	public Long createProduct(CreateProductReqDto reqDto) {
-		Product product = new Product(reqDto.productName(), reqDto.productDescription(), reqDto.productPrice(),
-			reqDto.stock());
+		Product product = createProductDomain(reqDto);
 
 		// rdb 상품 정보 저장
-		Product savedProduct = productRepository.save(product);
+		Product savedProduct = saveProductToRDB(product);
 
 		// redis 재고 저장
-		productRepository.saveStock(savedProduct);
+		saveProductStockToRedis(savedProduct);
 
 		return savedProduct.getId();
+	}
+
+	private void saveProductStockToRedis(Product savedProduct) {
+		productRepository.saveStock(savedProduct);
+	}
+
+	private Product saveProductToRDB(Product product) {
+		return productRepository.save(product);
+	}
+
+	private Product createProductDomain(CreateProductReqDto reqDto) {
+		return new Product(reqDto.productName(), reqDto.productDescription(), reqDto.productPrice(),
+			reqDto.stock());
 	}
 }
