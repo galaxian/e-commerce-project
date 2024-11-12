@@ -27,6 +27,10 @@ public class Product {
 		this.updateAt = updateAt;
 	}
 
+	public Product(String productName, String productDescription, BigDecimal price, Integer stock) {
+		this(null, productName, productDescription, price, stock, null, null);
+	}
+
 	public Boolean isSufficientStock(int quantity) {
 		return quantity <= stock;
 	}
