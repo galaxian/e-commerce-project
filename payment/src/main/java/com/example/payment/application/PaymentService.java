@@ -7,6 +7,7 @@ import com.example.member.application.port.out.MemberRepository;
 import com.example.member.domain.Member;
 import com.example.payment.application.port.in.CreatePaymentUseCase;
 import com.example.order.application.port.out.OrderRepository;
+import com.example.payment.application.port.in.ExecutePaymentUseCase;
 import com.example.payment.application.port.out.PaymentRepository;
 import com.example.order.domain.Order;
 import com.example.payment.common.exception.NotFoundException;
@@ -14,7 +15,7 @@ import com.example.payment.domain.Payment;
 
 @Transactional
 @Service
-public class PaymentService implements CreatePaymentUseCase {
+public class PaymentService implements CreatePaymentUseCase, ExecutePaymentUseCase {
 
 	private final OrderRepository orderRepository;
 	private final PaymentRepository paymentRepository;
@@ -47,5 +48,16 @@ public class PaymentService implements CreatePaymentUseCase {
 	private Member findMemberById(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
+	}
+
+	@Override
+	public void executePaymentUseCase(Long paymentId, Long memberId) {
+		Payment findPayment = paymentRepository.findById(paymentId).orElseThrow(
+			() -> new NotFoundException("결제 정보를 찾을 수 없습니다.")
+		);
+
+		findPayment.successPayment();
+
+		paymentRepository.save(findPayment);
 	}
 }
