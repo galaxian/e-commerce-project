@@ -135,7 +135,7 @@ class OrderServiceTest {
 
 		// when & then
 		assertThatThrownBy(() -> orderService.createOrder(createOrderReqDtos, userId))
-			.isInstanceOf(BadRequestException.class)
+			.isInstanceOf(com.example.product.common.exception.BadRequestException.class)
 			.hasMessageContaining("재고가 부족합니다.");
 	}
 
