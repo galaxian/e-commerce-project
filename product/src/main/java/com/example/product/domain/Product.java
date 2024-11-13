@@ -3,6 +3,8 @@ package com.example.product.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.example.product.common.exception.BadRequestException;
+
 import lombok.Getter;
 
 @Getter
@@ -33,5 +35,16 @@ public class Product {
 
 	public Boolean isSufficientStock(int quantity) {
 		return quantity <= stock;
+	}
+
+	public void decreaseStock(Integer quantity) {
+		if (!isSufficientStock(quantity)) {
+			throw new BadRequestException("상품 재고가 부족합니다.");
+		}
+		this.stock -= quantity;
+	}
+
+	public void increaseStock(Integer quantity) {
+		this.stock += quantity;
 	}
 }

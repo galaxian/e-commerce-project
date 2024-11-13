@@ -15,7 +15,6 @@ import com.example.order.application.port.in.CancelOrderUseCase;
 import com.example.order.application.port.in.CreateOrderUseCase;
 import com.example.order.application.port.out.OrderItemRepository;
 import com.example.order.application.port.out.OrderRepository;
-import com.example.order.common.exception.BadRequestException;
 import com.example.order.common.exception.NotFoundException;
 import com.example.order.domain.Address;
 import com.example.order.domain.Order;
@@ -50,8 +49,6 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 		createAndSaveOrderItems(createOrderReqDtos, order, productMap);
 
 		return order.getId();
-
-		// todo : 결제 정보 생성 로직 필요
 	}
 
 	@Override
@@ -64,7 +61,12 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 
 		orderRepository.save(findOrder);
 
-		//todo : 결제가 완료된 경우 환불 로직 구현 필요
+		List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
+		for (OrderItem orderItem : orderItemList) {
+			Product product = orderItem.getProduct();
+			product.increaseStock(orderItem.getQuantity());
+			productRepository.save(product);
+		}
 	}
 
 	private Member findMemberById(Long userId) {
@@ -96,9 +98,8 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 			.map(dto -> {
 				Product product = productMap.get(dto.productId());
 
-				if (!product.isSufficientStock(dto.quantity())) {
-					throw new BadRequestException("상품 ID " + dto.productId() + "의 재고가 부족합니다.");
-				}
+				product.decreaseStock(dto.quantity());
+				productRepository.save(product);
 
 				return product.getProductPrice().multiply(BigDecimal.valueOf(dto.quantity()));
 			})
