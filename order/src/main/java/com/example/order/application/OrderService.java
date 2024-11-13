@@ -61,7 +61,12 @@ public class OrderService implements CreateOrderUseCase, CancelOrderUseCase {
 
 		orderRepository.save(findOrder);
 
-		//todo : 결제가 완료된 경우 환불 로직 구현 필요
+		List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
+		for (OrderItem orderItem : orderItemList) {
+			Product product = orderItem.getProduct();
+			product.increaseStock(orderItem.getQuantity());
+			productRepository.save(product);
+		}
 	}
 
 	private Member findMemberById(Long userId) {
